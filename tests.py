@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import time
-from Individu import Individu
 import matplotlib.pyplot as plt
+
+from Individu import Individu
 #----------------------
 
 
 
 plt.style.use('bmh')
 
+# Testing individus
 
 I = Individu(1000, 2)
 print I.fat
 I.plot_degree_hist()
-#I.plot_degree_powerlaw()
+
