@@ -44,5 +44,6 @@ class Individu(object):
     pl = [xi**(-1.0*gam) for xi in x]
     plt.bar(x, dhf, color='royalblue')
     plt.plot(x, pl, '--', linewidth=3, color='firebrick')
+    plt.text(x[len(x)/2], 0.90, "y = x^(-"+str('%.3f'%gam)+')', fontsize=12)
     plt.show()
 
