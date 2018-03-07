@@ -5,9 +5,13 @@ import networkx as nx
 import time
 import powerlaw
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.optimize import curve_fit
 
 #----------------------
 
+def powlaw(x, g):
+  return x**(-g)
 
 class Individu(object):
   """docstring for Individu"""
@@ -30,8 +34,15 @@ class Individu(object):
 
   def plot_degree_hist(self):
     dh = nx.degree_histogram(self.G)
-    plt.hist(dh, bins=range(len(dh)), color='royalblue')
+    s = sum(dh)
+    dhf = [(1.0*dhi)/s for dhi in dh] # get the frequencies
+
+    fit = powerlaw.Fit(dh, sigma_threshold=1)
+    gam = fit.alpha # get gamma coef
+
+    x = range(len(dh))
+    pl = [xi**(-1.0*gam) for xi in x]
+    plt.bar(x, dhf, color='royalblue')
+    plt.plot(x, pl, '--', linewidth=3, color='firebrick')
     plt.show()
-
-
 
