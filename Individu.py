@@ -35,15 +35,20 @@ class Individu(object):
   def plot_degree_hist(self):
     dh = nx.degree_histogram(self.G)
     s = sum(dh)
+    # To slide powerlaw past the 0 values.
+    count=0
+    while 0 == dh[count]:
+      count+=1
+
     dhf = [(1.0*dhi)/s for dhi in dh] # get the frequencies
 
-    fit = powerlaw.Fit(dh, sigma_threshold=1)
+    fit = powerlaw.Fit(dh)
     gam = fit.alpha # get gamma coef
 
-    x = range(len(dh))
+    x = np.array(range(len(dh)))
     pl = [xi**(-1.0*gam) for xi in x]
     plt.bar(x, dhf, color='royalblue')
-    plt.plot(x, pl, '--', linewidth=3, color='firebrick')
+    plt.plot(x+count, pl, '--', linewidth=3, color='firebrick')
     plt.text(x[len(x)/2], 0.90, "y = x^(-"+str('%.3f'%gam)+')', fontsize=12)
     plt.show()
 

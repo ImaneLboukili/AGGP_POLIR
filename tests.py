@@ -13,6 +13,7 @@ plt.style.use('bmh')
 
 # Testing individus
 b4 = time.time()
+#I = Individu(1000, 5)
 I = Individu(4077, 10)
 after = time.time()
 
