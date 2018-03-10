@@ -51,8 +51,3 @@ class Population(object):
   		#returns N random individuals
   		return rd.sample(pop, N)
 
-Pop = Population(20, 40, 2)
-print "fatness de la pop initiale : ",[i.fat for i in Pop.pop]
-	
-Pop.selection(3, method="roulette")
-print "fatness selectionnees : ",[i.fat for i in Pop.ech]
