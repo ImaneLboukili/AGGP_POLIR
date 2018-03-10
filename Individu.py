@@ -10,9 +10,6 @@ from scipy.optimize import curve_fit
 
 #----------------------
 
-def powlaw(x, g):
-  return x**(-g)
-
 class Individu(object):
   """docstring for Individu"""
   def __init__(self, N, M, param=(1,1,1)):
@@ -50,5 +47,17 @@ class Individu(object):
     plt.bar(x, dhf, color='royalblue')
     plt.plot(x+count, pl, '--', linewidth=3, color='firebrick')
     plt.text(x[len(x)/2], 0.90, "y = x^(-"+str('%.3f'%gam)+')', fontsize=12)
+    plt.show()
+
+  def plot_graph(self):
+    #Plot graph
+    options = {
+        'node_color': 'blue',
+        'edge_color': 'black',
+        'node_size': 50,
+        'width': 2,
+        }
+    plt.subplot(111)
+    nx.draw(self.G, with_labels = False, **options)
     plt.show()
 
