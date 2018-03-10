@@ -10,8 +10,3 @@ import matplotlib.pyplot as plt
 
 plt.style.use('bmh')
 
-
-I = Individu(1000, 2)
-print I.fat
-I.plot_degree_hist()
-#I.plot_degree_powerlaw()
