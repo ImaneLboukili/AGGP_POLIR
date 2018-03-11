@@ -59,6 +59,7 @@ class Population(object):
     nodes_B = [rd.randint(0, B.N-1) for _ in range(n)]
 
     new_edges = []
+    del_edges = []
     for i in range(n):
       # get the connections in graph B
       j = 0
@@ -67,14 +68,15 @@ class Population(object):
           new_edges.append((nodes_A[i], nodes_A[j]))
         j += 1
 
-      # remove existing connections in graph A
+      # get existing connections in graph A
       j = 0
       for c in C.G[nodes_A[i]]:
         if c in nodes_A:
-          C.remove_edge((nodes_A[i], nodes_A[j]))
+          del_edges.append((nodes_A[i], nodes_A[j]))
         j += 1
 
-    # add the edges from B
+    # remove edges from A and add the edges from B
+    C.G.remove_edges_from(del_edges)
     C.G.add_edges_from(new_edges)
     return C
 
