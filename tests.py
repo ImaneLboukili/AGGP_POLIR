@@ -12,16 +12,8 @@ from Population import Population
 
 plt.style.use('bmh')
 
-TEST_INDIVIDU = False
-TEST_POPULATION = False
-TEST_MUTATION = True
 
-
-
-if TEST_INDIVIDU :
-  # Testing individus
-  print "\n\n Tests for Individus"
-  
+def indiv_gentime_test():
   N = 5
   m = 3
   b4 = time.time()
@@ -32,11 +24,17 @@ if TEST_INDIVIDU :
 
   print I.fat
   I.plot_degree_hist()
+
+def copy_indiv_test():
+  I = Individu(5, 3)
   I.plot_graph()
-  #I.basic_mut() #Basic mutation : one edge of the graph is removed, an other one is added
 
+  J = I.copy()
+  I.G.remove_node(2)
 
-if TEST_MUTATION:
+  J.plot_graph()
+
+def basic_mut_test():
   I = Individu(250,3)
   I.plot_graph()
 
@@ -48,9 +46,7 @@ if TEST_MUTATION:
 
   I.plot_graph()
 
-
-if TEST_POPULATION :
-
+def pop_sampling_test():
   Pop = Population(20, 40, 2)
   print "fatness of initial pop : ",[i.fat for i in Pop.pop]
     
@@ -58,5 +54,21 @@ if TEST_POPULATION :
   print "fatness of selected individuals : ",[i.fat for i in Pop.ech]
 
 
-if not TEST_POPULATION and not TEST_INDIVIDU and not TEST_MUTATION:
-  print "\n\nA least put ONE of the test variables to True...\n\n"
+def pop_crossing_over_test():
+  Pop = Population(2, 9, 2)
+
+  Pop.pop[0].plot_graph(w_labels=True)
+  Pop.pop[1].plot_graph(w_labels=True)
+  
+
+  c = Pop.crossing_over(Pop.pop[0], Pop.pop[1])
+  c.plot_graph(w_labels=True)
+
+
+
+if __name__ == '__main__':
+  # indiv_gentime_test()
+  # basic_mut_test()
+  # copy_indiv_test()
+  pop_crossing_over_test()
+
