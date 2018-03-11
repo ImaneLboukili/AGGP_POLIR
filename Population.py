@@ -51,3 +51,31 @@ class Population(object):
   		#returns N random individuals
   		return rd.sample(pop, N)
 
+  def crossing_over(self, A, B):
+    n = rd.randint(0, A.N-1)
+    C = A.copy()
+
+    nodes_A = [rd.randint(0, A.N-1) for _ in range(n)]
+    nodes_B = [rd.randint(0, B.N-1) for _ in range(n)]
+
+    new_edges = []
+    for i in range(n):
+      # get the connections in graph B
+      j = 0
+      for b in B.G[nodes_B[i]]:
+        if b in nodes_B:
+          new_edges.append((nodes_A[i], nodes_A[j]))
+        j += 1
+
+      # remove existing connections in graph A
+      j = 0
+      for c in C.G[nodes_A[i]]:
+        if c in nodes_A:
+          C.remove_edge((nodes_A[i], nodes_A[j]))
+        j += 1
+
+    # add the edges from B
+    C.G.add_edges_from(new_edges)
+    return C
+
+
