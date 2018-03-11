@@ -61,3 +61,29 @@ class Individu(object):
     nx.draw(self.G, with_labels = False, **options)
     plt.show()
 
+  def basic_mut(self):
+
+  	
+  	r=int(np.random.random()*len(self.G.edges()))
+  	print "removed edge :"
+  	print self.G.edges()[r]
+
+  	self.G.remove_edge(self.G.edges()[r][0], self.G.edges()[r][1])
+
+  	x1 = int(np.random.random()*self.N)
+  	x2 = int(np.random.random()*self.N)
+  	new_edge = (x1,x2)
+
+  	while new_edge in self.G.edges() :
+  		x1 = int(np.random.random()*self.N)
+  		x2 = int(np.random.random()*self.N)
+  		new_edge = (x1,x2)
+
+  	self.G.add_edge(x1, x2)
+
+  	print "added edge :"
+  	print "("+str(x1)+" ,"+str(x2)+")"
+
+
+
+

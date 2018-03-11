@@ -12,7 +12,7 @@ from Population import Population
 
 plt.style.use('bmh')
 
-TEST_INDIVIDU = False
+TEST_INDIVIDU = True
 TEST_POPULATION = False
 
 
@@ -22,7 +22,7 @@ if TEST_INDIVIDU :
   # Testing individus
   print "\n\n Tests for Individus"
   
-  N = 1000
+  N = 5
   m = 3
   b4 = time.time()
   I = Individu(N, m)
@@ -33,6 +33,7 @@ if TEST_INDIVIDU :
   print I.fat
   I.plot_degree_hist()
   I.plot_graph()
+  I.basic_mut() #Basic mutation : one edge of the graph is removed, an other one is added
 
 
 
