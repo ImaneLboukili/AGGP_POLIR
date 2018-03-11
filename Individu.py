@@ -56,7 +56,7 @@ class Individu(object):
     plt.text(x[len(x)/2], 0.90, "y = x^(-"+str('%.3f'%gam)+')', fontsize=12)
     plt.show()
 
-  def plot_graph(self):
+  def plot_graph(self, w_labels=False):
     #Plot graph
     options = {
         'node_color': 'blue',
@@ -65,7 +65,7 @@ class Individu(object):
         'width': 2,
         }
     plt.subplot(111)
-    nx.draw(self.G, with_labels = False, **options)
+    nx.draw(self.G, with_labels = w_labels, **options)
     plt.show()
 
   def basic_mut(self): 	
