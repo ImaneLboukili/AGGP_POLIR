@@ -13,14 +13,20 @@ from scipy.optimize import curve_fit
 
 class Individu(object):
   """docstring for Individu"""
-  def __init__(self, N, M, param=(1,1,1)):
+  def __init__(self, N, M, param=(1,1,1), copy = False, G = None, fat = None):
     self.N = N
     self.M = M
     self.param = param
 
-    self.G = nx.barabasi_albert_graph(self.N, self.M)
+    if not copy :
+      self.G = nx.barabasi_albert_graph(self.N, self.M)
+      self.fat = self.fatness()
+    else :
+      self.G = G
+      self.fat = fat
 
-    self.fat = self.fatness()
+  def copy(self):
+    return Individu(self.N, self.M, param=self.param, copy=True, G = self.G.copy(), fat = self.fat)
 
   def fatness(self):
     g_obs = powerlaw.Fit(nx.degree_histogram(self.G)).alpha
