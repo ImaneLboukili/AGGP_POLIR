@@ -62,18 +62,18 @@ class Population(object):
     del_edges = []
     for i in range(n):
       # get the connections in graph B
-      j = 0
+      #j = 0
       for b in B.G[nodes_B[i]]:
         if b in nodes_B:
-          new_edges.append((nodes_A[i], nodes_A[j]))
-        j += 1
+          new_edges.append((nodes_A[i], b))
+        #j += 1
 
       # get existing connections in graph A
-      j = 0
+      #j = 0
       for c in C.G[nodes_A[i]]:
         if c in nodes_A:
-          del_edges.append((nodes_A[i], nodes_A[j]))
-        j += 1
+          del_edges.append((nodes_A[i], c))
+        #j += 1
 
     # remove edges from A and add the edges from B
     C.G.remove_edges_from(del_edges)
