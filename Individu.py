@@ -6,6 +6,7 @@ import time
 import powerlaw
 import matplotlib.pyplot as plt
 import numpy as np
+import random as rd
 from scipy.optimize import curve_fit
 
 #----------------------
@@ -61,29 +62,20 @@ class Individu(object):
     nx.draw(self.G, with_labels = False, **options)
     plt.show()
 
-  def basic_mut(self):
+  def basic_mut(self): 	
+    re = list(self.G.edges)[rd.randint(0,self.N-1)]
+    self.G.remove_edge(re[0], re[1])
 
-  	
-  	r=int(np.random.random()*len(self.G.edges()))
-  	print "removed edge :"
-  	print self.G.edges()[r]
+    x1 = rd.randint(0,self.N-1) 
+    x2 = rd.randint(0,self.N-1) 
+    new_edge = (x1,x2)
 
-  	self.G.remove_edge(self.G.edges()[r][0], self.G.edges()[r][1])
+    while new_edge in self.G.edges:
+      x1 = rd.randint(0,self.N-1) 
+      x2 = rd.randint(0,self.N-1)
+      new_edge = (x1,x2)
 
-  	x1 = int(np.random.random()*self.N)
-  	x2 = int(np.random.random()*self.N)
-  	new_edge = (x1,x2)
-
-  	while new_edge in self.G.edges() :
-  		x1 = int(np.random.random()*self.N)
-  		x2 = int(np.random.random()*self.N)
-  		new_edge = (x1,x2)
-
-  	self.G.add_edge(x1, x2)
-
-  	print "added edge :"
-  	print "("+str(x1)+" ,"+str(x2)+")"
-
+    self.G.add_edge(x1, x2)
 
 
 
