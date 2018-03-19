@@ -29,9 +29,9 @@ def mk_i(nm):
   return Individu(nm[0], nm[1], nm[2])
 
 # is outside of class because of Pool
-def evolve(pop):
+def evolve(Pop):
   # Get mother indiv from selected
-  mother = pop.ech[rd.randint(0, pop.echsize-1)]
+  mother = Pop.ech[rd.randint(0, Pop.echsize-1)]
 
   # Create child
   child = mother.copy()
@@ -39,12 +39,12 @@ def evolve(pop):
   # Eventual modifications to child
   p = rd.random()
 
-  if p < pop.pMut:
+  if p < Pop.pMut:
     child.basic_mut()
 
-  if p < pop.pCros:
-    father = pop.pop[rd.randint(0, pop.nInd-1)]
-    child = pop.crossing_over(child, father)
+  if p < Pop.pCros:
+    father = Pop.pop[rd.randint(0, Pop.nInd-1)]
+    child = Pop.crossing_over(child, father)
 
   #update fatness
   child.fat = child.fatness()
@@ -75,6 +75,7 @@ class Population(object):
     self.pCros = pCros
     self.nprocess = nprocess
     pool = Pool(self.nprocess)
+    self.tb = [self]*self.nInd
 
     self.start_time = time.time()
 
@@ -119,7 +120,7 @@ class Population(object):
     self.gen = 0
 
   def finish(self):
-    log = "\n## \n## "+str(datetime.datetime.now())+"\n##     Total Simulation time = "+str('%.2f'%(self.start_time-time.time()))+"s\n" 
+    log = "\n## \n## "+str(datetime.datetime.now())+"\n##     Total Simulation time = "+str('%.2f'%(time.time()-self.start_time))+"s\n" 
     self.wlog(log)
 
   def wlog(self, log):
@@ -136,8 +137,11 @@ class Population(object):
 
     # get the sample for this generation
     self.selection()
+
+    #tb = [self]*self.nInd
+
     # make new Indivs from the chosen
-    new_gen = pool.map(evolve, [self]*self.nInd)
+    new_gen = pool.map(evolve, self.tb)
     self.pop = new_gen
     self.gen += 1
 
