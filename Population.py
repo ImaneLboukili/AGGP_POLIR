@@ -7,6 +7,7 @@ from Individu import Individu
 import random as rd
 import numpy as np
 
+
 #imports only above this line
 #----------------------
 
@@ -16,8 +17,13 @@ class Population(object):
   def __init__(self, nInd, N, M):
     
     self.nInd = nInd
+    start_gen = time.time()
     self.pop = [Individu(N, M) for _ in range(self.nInd)]
+    
+    self.init_gen_time = time.time-start_gen
     self.ech = None
+
+
     
     
   def selection(self, N, method = "random"):
@@ -52,7 +58,7 @@ class Population(object):
   		return rd.sample(pop, N)
 
   def crossing_over(self, A, B):
-    n = rd.randint(0, A.N-1)
+    n = rd.randint(0, int((A.N-1)/2))
     C = A.copy()
 
     nodes_A = [rd.randint(0, A.N-1) for _ in range(n)]
@@ -62,18 +68,14 @@ class Population(object):
     del_edges = []
     for i in range(n):
       # get the connections in graph B
-      #j = 0
       for b in B.G[nodes_B[i]]:
         if b in nodes_B:
           new_edges.append((nodes_A[i], b))
-        #j += 1
 
       # get existing connections in graph A
-      #j = 0
       for c in C.G[nodes_A[i]]:
         if c in nodes_A:
           del_edges.append((nodes_A[i], c))
-        #j += 1
 
     # remove edges from A and add the edges from B
     C.G.remove_edges_from(del_edges)
