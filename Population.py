@@ -16,9 +16,11 @@ import sys
 
 class Population(object):
   """docstring for Population"""
-  def __init__(self, nInd, N, M, method="random" logfile=False):
+  def __init__(self, nInd, N, M, method="random", logfile=False):
     
     self.nInd = nInd
+    self.method = method
+
     self.logfile = logfile
     if self.logfile :
       with open(self.logfile, 'w') as o:
@@ -27,7 +29,8 @@ class Population(object):
     log = "##========================="+\
           "\n## "+str(datetime.datetime.now())+" : Simulation started."+\
           "\n## Parameters are the following :" +\
-          "\n##      nInd = "+str(self.nInd)+"  N = "+str(N)+"  M = "+str(M)
+          "\n##      nInd = "+str(self.nInd)+"  N = "+str(N)+"  M = "+str(M) +\
+          "\n##      method = "+self.method
     
     self.wlog(log)
 
