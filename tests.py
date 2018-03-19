@@ -75,6 +75,16 @@ def pop_multiprocess_test():
 def no_warnings_test():
   Pop = Population(10, 250, 3, nprocess = 1, logfile='logz.log')
 
+def generation_test():
+  Pop = Population(50, 150, 3, params=(1.0,1.7,2.5), echsize=10,  method="roulette", pMut=0.01, pCros=0.001, nprocess = 2, logfile='loggen2.log')
+  for i in range(15):
+    Pop.generation()
+
+  Pop.finish()
+  for ind in Pop.pop:
+    print ind.fat
+
+
 
 if __name__ == '__main__':
   # indiv_gentime_test()
@@ -83,4 +93,5 @@ if __name__ == '__main__':
   # pop_crossing_over_test()
   # pop_log_test()
   # pop_multiprocess_test()
-  no_warnings_test()
+  #no_warnings_test()
+  generation_test()
