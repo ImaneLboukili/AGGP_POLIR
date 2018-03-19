@@ -72,6 +72,9 @@ def pop_multiprocess_test():
   Pop = Population(100, 250, 3, nprocess = 1, logfile='log1.log')
   Pop = Population(100, 250, 3, nprocess = 3, logfile='log3.log')
 
+def no_warnings_test():
+  Pop = Population(10, 250, 3, nprocess = 1, logfile='logz.log')
+
 
 if __name__ == '__main__':
   # indiv_gentime_test()
@@ -79,4 +82,5 @@ if __name__ == '__main__':
   # copy_indiv_test() 
   # pop_crossing_over_test()
   # pop_log_test()
-  pop_multiprocess_test()
+  # pop_multiprocess_test()
+  no_warnings_test()
