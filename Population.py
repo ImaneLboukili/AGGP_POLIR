@@ -16,7 +16,7 @@ import sys
 
 class Population(object):
   """docstring for Population"""
-  def __init__(self, nInd, N, M, logfile=False):
+  def __init__(self, nInd, N, M, method="random" logfile=False):
     
     self.nInd = nInd
     self.logfile = logfile
@@ -53,9 +53,9 @@ class Population(object):
       print log
     
     
-  def selection(self, N, method = "random"):
+  def selection(self, N):
   	# selects N individuals, which probability of selection is based on their fatness
-  	if "roulette" == method:
+  	if "roulette" == self.method:
 
   		sum_fat = sum([i.fat for i in self.pop])
   		probas = [i.fat/sum_fat for i in self.pop]
@@ -74,15 +74,15 @@ class Population(object):
   				selected_ind.append(ind)
   				
   		
-  	if "lion" == method:
+  	if "lion" == self.method:
   		#returns the N individuals with the lowest fatness
   		rank = np.argsort([i.fat for i in pop])
   		self.ech = [pop[r] for r in rank[0:N]]
 
   		
-  	if "random" == method :
+  	if "random" == self.method :
   		#returns N random individuals
-  		return rd.sample(pop, N)
+  		self.ech = rd.sample(pop, N)
 
   def crossing_over(self, A, B):
     # A and B are 2 Individu objects
