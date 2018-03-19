@@ -9,20 +9,38 @@ import random as rd
 import numpy as np
 import sys
 
+# In theory, it's better to use this for classes and stuff but 
+# it's not installed and it's kind of a pain...
+
+#from pathos.multiprocessing import ProcessingPool as Pool
+
+# SO. Instead, we use the basic version which needs to be able to convert
+# the functions with cPickle (ie. no class methods etc.) This means, we'll need
+# to externalize some functions to muliprocess them. It's ugly but hey, whatever works...
+from multiprocessing import Pool
+
 
 #imports only above this line
 #----------------------
 
 
+# because of Pool
+def mk_i(nm):
+  return Individu(nm[0], nm[1])
+
+
+
 class Population(object):
   """docstring for Population"""
-  def __init__(self, nInd, N, M, method="random", logfile=False):
+  def __init__(self, nInd, N, M, method="random", logfile=False, nprocess = 3):
     
     self.nInd = nInd
     self.method = method
+    self.pool = Pool(nprocess)
 
     self.logfile = logfile
     if self.logfile :
+      #clears eventual logfile with same name
       with open(self.logfile, 'w') as o:
         pass
 
@@ -30,18 +48,26 @@ class Population(object):
           "\n## "+str(datetime.datetime.now())+" : Simulation started."+\
           "\n## Parameters are the following :" +\
           "\n##      nInd = "+str(self.nInd)+"  N = "+str(N)+"  M = "+str(M) +\
-          "\n##      method = "+self.method
+          "\n##      method = "+self.method+\
+          "\n##      nprocess = "+str(nprocess)
     
     self.wlog(log)
 
     # Population generation
     start_gen = time.time()
-    self.pop = [Individu(N, M) for _ in range(self.nInd)]
+    self.pop = []   #[Individu(N, M) for _ in range(self.nInd)]
+
+    # make an iterable array of parameters for every Indiv.
+    pms = [(N, M)]*self.nInd 
+
+    # get the results
+    self.pop = self.pool.map(mk_i, pms)
+
     init_gen_time = time.time()-start_gen
 
 
     log = "\n## \n## "+str(datetime.datetime.now())+" : Generation of population done."+\
-          "\n##      Done in "+str(init_gen_time)+"s\n"
+          "\n##      Done in "+str('%.2f'%init_gen_time)+"s\n"
     self.wlog(log)
 
     self.ech = None
@@ -49,6 +75,7 @@ class Population(object):
 
 
   def wlog(self, log):
+    # writes log (to file if given)
     if self.logfile:
       with open(self.logfile, 'a') as o :
         o.write(log)
