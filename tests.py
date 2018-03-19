@@ -55,7 +55,7 @@ def pop_sampling_test():
 
 
 def pop_crossing_over_test():
-  Pop = Population(2, 9, 2)
+  Pop = Population(2, 50, 1)
 
   Pop.pop[0].plot_graph(w_labels=True)
   Pop.pop[1].plot_graph(w_labels=True)
@@ -64,11 +64,19 @@ def pop_crossing_over_test():
   c = Pop.crossing_over(Pop.pop[0], Pop.pop[1])
   c.plot_graph(w_labels=True)
 
+def pop_log_test():
+  Pop = Population(20, 40, 2)
+  Pop = Population(20, 400, 3, logfile='log.log')
+
+def pop_multiprocess_test():
+  Pop = Population(100, 250, 3, nprocess = 1, logfile='log1.log')
+  Pop = Population(100, 250, 3, nprocess = 3, logfile='log3.log')
 
 
 if __name__ == '__main__':
   # indiv_gentime_test()
   # basic_mut_test()
-  # copy_indiv_test()
-  pop_crossing_over_test()
-
+  # copy_indiv_test() 
+  # pop_crossing_over_test()
+  # pop_log_test()
+  pop_multiprocess_test()
