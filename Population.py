@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import networkx
+import datetime
 import time
 from Individu import Individu
 import random as rd
 import numpy as np
+import sys
 
 
 #imports only above this line
@@ -14,16 +16,41 @@ import numpy as np
 
 class Population(object):
   """docstring for Population"""
-  def __init__(self, nInd, N, M):
+  def __init__(self, nInd, N, M, logfile=False):
     
     self.nInd = nInd
+    self.logfile = logfile
+    if self.logfile :
+      with open(self.logfile, 'w') as o:
+        pass
+
+    log = "##========================="+\
+          "\n## "+str(datetime.datetime.now())+" : Simulation started."+\
+          "\n## Parameters are the following :" +\
+          "\n##      nInd = "+str(self.nInd)+"  N = "+str(N)+"  M = "+str(M)
+    
+    self.wlog(log)
+
+    # Population generation
     start_gen = time.time()
     self.pop = [Individu(N, M) for _ in range(self.nInd)]
-    
-    self.init_gen_time = time.time-start_gen
+    init_gen_time = time.time()-start_gen
+
+
+    log = "\n## \n## "+str(datetime.datetime.now())+" : Generation of population done."+\
+          "\n##      Done in "+str(init_gen_time)+"s\n"
+    self.wlog(log)
+
     self.ech = None
 
 
+
+  def wlog(self, log):
+    if self.logfile:
+      with open(self.logfile, 'a') as o :
+        o.write(log)
+    else :
+      print log
     
     
   def selection(self, N, method = "random"):
@@ -58,6 +85,7 @@ class Population(object):
   		return rd.sample(pop, N)
 
   def crossing_over(self, A, B):
+    # A and B are 2 Individu objects
     n = rd.randint(0, int((A.N-1)/2))
     C = A.copy()
 
