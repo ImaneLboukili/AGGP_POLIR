@@ -44,7 +44,8 @@ def evolve(Pop):
 
   if p < Pop.pCros:
     father = Pop.pop[rd.randint(0, Pop.nInd-1)]
-    child = Pop.crossing_over(child, father)
+    child1 = Pop.crossing_over(child, father)
+    child = child1.copy()
 
   #update fatness
   child.fat = child.fatness()
@@ -138,7 +139,6 @@ class Population(object):
     # get the sample for this generation
     self.selection()
 
-    #tb = [self]*self.nInd
 
     # make new Indivs from the chosen
     new_gen = pool.map(evolve, self.tb)
@@ -186,11 +186,11 @@ class Population(object):
 
   def crossing_over(self, A, B):
     # A and B are 2 Individu objects
-    n = rd.randint(0, int((A.self.echsize-1)/2))
+    n = rd.randint(0, int((A.N-1)/2))
     C = A.copy()
 
-    nodes_A = [rd.randint(0, A.self.echsize-1) for _ in range(n)]
-    nodes_B = [rd.randint(0, B.self.echsize-1) for _ in range(n)]
+    nodes_A = [rd.randint(0, A.N-1) for _ in range(n)]
+    nodes_B = [rd.randint(0, B.N-1) for _ in range(n)]
 
     new_edges = []
     del_edges = []
