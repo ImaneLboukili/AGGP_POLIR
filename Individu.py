@@ -38,7 +38,7 @@ class Individu(object):
     dmoy = nx.average_shortest_path_length(self.G)
     fatness = sum([(1-g_obs/self.param[0])**2, (dmoy/self.param[1])*2,(cc/self.param[2])**2])
 
-    return  fatness
+    return fatness
 
   def plot_degree_hist(self):
     dh = nx.degree_histogram(self.G)
