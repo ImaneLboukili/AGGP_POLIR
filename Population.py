@@ -8,6 +8,7 @@ from Individu import Individu
 import random as rd
 import numpy as np
 import sys
+import networkx as nx
 
 # In theory, it's better to use this for classes and stuff but 
 # it's not installed and it's kind of a pain...
@@ -33,22 +34,29 @@ def evolve(Pop):
   # Get mother indiv from selected
   mother = Pop.ech[rd.randint(0, Pop.echsize-1)]
 
-  # Create child
-  child = mother.copy()
-  
-  # Eventual modifications to child
-  p = rd.random()
+  while True:
+    try:
+      # Create child
+      child = mother.copy()
+      
+      # Eventual modifications to child
+      p = rd.random()
 
-  if p < Pop.pMut:
-    child.basic_mut()
+      if p < Pop.pMut:
+        child.basic_mut()
 
-  if p < Pop.pCros:
-    father = Pop.pop[rd.randint(0, Pop.nInd-1)]
-    child1 = Pop.crossing_over(child, father)
-    child = child1.copy()
+      if p < Pop.pCros:
+        father = Pop.pop[rd.randint(0, Pop.nInd-1)]
+        child1 = Pop.crossing_over(child, father)
+        child = child1.copy()
 
-  #update fatness
-  child.fat = child.fatness()
+      #update fatness
+      child.fat = child.fatness()
+      break
+    except nx.NetworkXError :
+      # if the child has a disconnected graph, an error will be raised so 
+      # the child dies and another one is produced.
+      pass
   return child
 
 class Population(object):
