@@ -76,7 +76,7 @@ def no_warnings_test():
   Pop = Population(10, 250, 3, nprocess = 1, logfile='logz.log')
 
 def generation_test():
-  Pop = Population(50, 150, 3, params=(1.0,1.7,2.5), echsize=20,  method="roulette", pMut=0.01, pCros=0.01, nprocess = 2, logfile='loggen2.log')
+  Pop = Population(50, 150, 3, params=(1.0,1.7,2.5), echsize=20,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='loggen2.log')
   for i in range(15):
     Pop.generation()
 
