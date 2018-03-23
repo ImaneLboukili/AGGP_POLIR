@@ -59,6 +59,16 @@ def evolve(Pop):
       pass
   return child
 
+def bfs(graph, start, N, path=[]):
+  queue = [start]
+  while (queue and len(path) < N):
+   vertex = queue.pop(0)
+   if vertex not in path:
+    path.append(vertex)
+    queue.extend(set(graph[vertex]) - set(path))
+
+  return path
+
 class Population(object):
   """docstring for Population
   Parameters :
@@ -149,7 +159,7 @@ class Population(object):
 
 
     # make new Indivs from the chosen
-    new_gen = pool.map(evolve, self.tb)
+    new_gen = pool.map(evolve, self.tb)#[evolve(self) for _ in range(self.nInd)]#
     self.pop = new_gen
     self.gen += 1
 
@@ -194,14 +204,15 @@ class Population(object):
 
   def crossing_over(self, A, B):
     # A and B are 2 Individu objects
-    n = rd.randint(0, int((A.N-1)/2))
+    n = int((A.N-1)/2)#rd.randint(0, int((A.N-1)/2))
     C = A.copy()
 
-    nodes_A = [rd.randint(0, A.N-1) for _ in range(n)]
-    nodes_B = [rd.randint(0, B.N-1) for _ in range(n)]
+    nodes_A = bfs(A.G, rd.randint(0, A.N-1), n)
+    nodes_B = bfs(B.G, rd.randint(0, B.N-1), n)
 
     new_edges = []
     del_edges = []
+    print n, len(nodes_B)
     for i in range(n):
       # get the connections in graph B
       for b in B.G[nodes_B[i]]:
