@@ -112,6 +112,7 @@ class Population(object):
           "\n## Parameters are the following :" +\
           "\n##      nInd = "+str(self.nInd)+"  N = "+str(N)+"  M = "+str(M) +\
           "\n##      g_th = "+str('%.2f'%self.params[0])+"  dmoy = "+str('%.2f'%self.params[1])+ "  cc = "+str('%.2f'%self.params[2])+\
+          "\n##      pMut = "+str(self.pMut)+"  pCors = "+str(pCros)+\
           "\n##      echsize = "+str(self.echsize)+"  method = "+self.method+\
           "\n##      nprocess = "+str(nprocess)
     
@@ -169,7 +170,7 @@ class Population(object):
 
     log = "\n## "+str(datetime.datetime.now())+ " : Evolved to gen "+str(self.gen)+\
           "\n##     Done in "+str('%.2f'%gen_time)+"s"+\
-          "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))
+          "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))+"  min fatness = "+str('%.5f'%np.min([ind.fat for ind in self.pop]))
     self.wlog(log)
 
     # for ind in self.pop:
@@ -206,7 +207,7 @@ class Population(object):
 
   def crossing_over(self, A, B):
     # A and B are 2 Individu objects
-    n = int((A.N-1)/2)#rd.randint(0, int((A.N-1)/2))
+    n = int((A.N-1)/10)#rd.randint(0, int((A.N-1)/2))
     C = A.copy()
 
     nodes_A = bfs(A.G, rd.randint(0, A.N-1), n)

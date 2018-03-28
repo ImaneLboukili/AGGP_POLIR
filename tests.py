@@ -76,13 +76,31 @@ def no_warnings_test():
   Pop = Population(10, 250, 3, nprocess = 1, logfile='logz.log')
 
 def generation_test():
-  Pop = Population(50, 150, 2500, params=(1.0,1.7,2.5), echsize=20,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='loggen3.log')
+
+  Pop = Population(50, 150, 2500, params=(2.5,1.6,1.0), echsize=10,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='loggen3.log')
+  
+  fats = [ind.fat for ind in Pop.pop]
+  best_i = fats.index(min(fats))
+  best_ind = Pop.pop[best_i]
+
+  plt.subplot(121)
+  best_ind.plot_graph()
+
   for i in range(15):
     Pop.generation()
 
   Pop.finish()
   for ind in Pop.pop:
     print ind.fat
+
+  fats = [ind.fat for ind in Pop.pop]
+  best_i = fats.index(min(fats))
+  best_ind = Pop.pop[best_i]
+
+  plt.subplot(122)
+  best_ind.plot_graph()
+
+  plt.show()
 
 def fit_edges_test():
   
