@@ -50,6 +50,8 @@ def evolve(Pop):
         child1 = Pop.crossing_over(child, father)
         child = child1.copy()
 
+      child.fit_edges(child.M)
+
       #update fatness
       child.fat = child.fatness()
       break
@@ -159,7 +161,7 @@ class Population(object):
 
 
     # make new Indivs from the chosen
-    new_gen = pool.map(evolve, self.tb)#[evolve(self) for _ in range(self.nInd)]#
+    new_gen = [evolve(self) for _ in range(self.nInd)]#pool.map(evolve, self.tb)#
     self.pop = new_gen
     self.gen += 1
 
@@ -212,7 +214,7 @@ class Population(object):
 
     new_edges = []
     del_edges = []
-    print n, len(nodes_B)
+    #print n, len(nodes_B)
     for i in range(n):
       # get the connections in graph B
       for b in B.G[nodes_B[i]]:
