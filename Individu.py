@@ -20,8 +20,13 @@ class Individu(object):
     self.M = M
     self.param = param
 
+    
+
     if not copy :
-      self.G = nx.barabasi_albert_graph(self.N, self.M)
+      m = int(min([(-1-self.N-np.sqrt((1+self.N)**2-4*self.M))/(-2.0), (-1-self.N+np.sqrt((1+self.N)**2-4*self.M))/(-2.0)]))
+      self.G = nx.barabasi_albert_graph(self.N, m)
+      
+      self.fit_edges(self.M)
       self.fat = self.fatness()
     else :
       self.G = G
@@ -86,6 +91,32 @@ class Individu(object):
       new_edge = (x1,x2)
 
     self.G.add_edge(x1, x2)
+
+  def fit_edges(self, n_fit):
+
+    n_G = len(self.G.edges())
+
+    diff = n_fit - n_G
+
+    if (diff > 0) :
+
+      for i in range(diff) :
+        x1 = rd.randint(0,self.N) 
+        x2 = rd.randint(0,self.N) 
+        new_edge = (x1,x2)
+
+        while new_edge in self.G.edges():
+          x1 = rd.randint(0,self.N) 
+          x2 = rd.randint(0,self.N)
+          new_edge = (x1,x2)
+
+        self.G.add_edge(x1, x2)
+
+    if (diff < 0) :
+
+      for i in range(diff) :
+        re = list(self.G.edges)[rd.randint(0,n_fit)]
+        self.G.remove_edge(re[0], re[1])
 
 
 
