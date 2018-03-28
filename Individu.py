@@ -23,7 +23,9 @@ class Individu(object):
     
 
     if not copy :
-      m = int(min([(-1-self.N-np.sqrt((1+self.N)**2-4*self.M))/(-2.0), (-1-self.N+np.sqrt((1+self.N)**2-4*self.M))/(-2.0)]))
+      m = int(min([(self.N-0.5)+np.sqrt((self.N-0.5)**2 - 2*self.M),((self.N-0.5)-np.sqrt((self.N-0.5)**2 - 2*self.M))]))
+      #print [(self.N-0.5)+np.sqrt((self.N-0.5)**2 - 2*self.M),((self.N-0.5)-np.sqrt((self.N-0.5)**2 - 2*self.M))]
+      #int(min([(-1-self.N-np.sqrt((1+self.N)**2-4*self.M))/(-2.0), (-1-self.N+np.sqrt((1+self.N)**2-4*self.M))/(-2.0)]))
       self.G = nx.barabasi_albert_graph(self.N, m)
       
       self.fit_edges(self.M)
