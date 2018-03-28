@@ -26,13 +26,13 @@ def indiv_gentime_test():
   I.plot_degree_hist()
 
 def copy_indiv_test():
-  I = Individu(5, 3)
-  I.plot_graph()
+  I = Individu(150, 2500)
+  #I.plot_graph()
 
   J = I.copy()
   I.G.remove_node(2)
 
-  J.plot_graph()
+  # J.plot_graph()
 
 def basic_mut_test():
   I = Individu(250,3)
@@ -76,13 +76,40 @@ def no_warnings_test():
   Pop = Population(10, 250, 3, nprocess = 1, logfile='logz.log')
 
 def generation_test():
-  Pop = Population(50, 150, 3, params=(1.0,1.7,2.5), echsize=20,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='loggen2.log')
+  Pop = Population(50, 150, 2500, params=(1.0,1.7,2.5), echsize=20,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='loggen3.log')
   for i in range(15):
     Pop.generation()
 
   Pop.finish()
   for ind in Pop.pop:
     print ind.fat
+
+def fit_edges_test():
+  
+  b4 = time.time()
+  I = Individu(150,2500) 
+  after = time.time()
+
+  print "Gen time for N="+str(150)+" and m="+str(2500)+" : ", after-b4, " s"
+
+  print I.fat
+
+  # n = len(I.G.edges())
+
+  # print "initial number of edges :"
+  # print len(I.G.edges())
+  
+  # I.fit_edges(n)
+  # print " number of e. after fit with a good number of edges :"
+  # print len(I.G.edges())
+
+  # I.fit_edges(n+2)
+  # print "nb of e. after we say we need two more edges :"
+  # print len(I.G.edges())
+
+  # I.fit_edges(n)
+  # print "nb of e. after we say we need two edges less :"
+  # print len(I.G.edges())
 
 
 
@@ -95,3 +122,4 @@ if __name__ == '__main__':
   # pop_multiprocess_test()
   #no_warnings_test()
   generation_test()
+  # fit_edges_test()
