@@ -40,10 +40,10 @@ class Individu(object):
   def fatness(self):
     with warnings.catch_warnings():
       warnings.simplefilter("ignore")
-      g_obs = powerlaw.Fit(nx.degree_histogram(self.G), verbose=False).alpha
-    cc = nx.average_clustering(self.G)
-    dmoy = nx.average_shortest_path_length(self.G)
-    fatness = sum([(1-g_obs/self.param[0])**2, (dmoy/self.param[1])*2,(cc/self.param[2])**2])
+      self.g_obs = powerlaw.Fit(nx.degree_histogram(self.G), verbose=False).alpha
+    self.cc = nx.average_clustering(self.G)
+    self.dmoy = nx.average_shortest_path_length(self.G)
+    fatness = sum([(1-self.g_obs/self.param[0])**2, (self.dmoy/self.param[1])*2,(self.cc/self.param[2])**2])
 
     return fatness
 

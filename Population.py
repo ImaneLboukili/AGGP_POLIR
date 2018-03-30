@@ -162,7 +162,7 @@ class Population(object):
 
 
     # make new Indivs from the chosen
-    new_gen = [evolve(self) for _ in range(self.nInd)]#pool.map(evolve, self.tb)#
+    new_gen = pool.map(evolve, self.tb)#[evolve(self) for _ in range(self.nInd)]#
     self.pop = new_gen
     self.gen += 1
 

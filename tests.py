@@ -100,7 +100,7 @@ def generation_test():
   plt.subplot(122)
   best_ind.plot_graph()
 
-  plt.show()
+  plt.show(o)
 
 def fit_edges_test():
   
@@ -129,6 +129,31 @@ def fit_edges_test():
   # print "nb of e. after we say we need two edges less :"
   # print len(I.G.edges())
 
+def sim1():
+  Pop = Population(500, 100, 1650, params=(2.5,1.52,1.0), echsize=50,  method="roulette", pMut=0.01, pCros=0.5, nprocess = 2, logfile='logsim1.log')
+  
+  fats = [ind.fat for ind in Pop.pop]
+  best_i = fats.index(min(fats))
+  best_ind = Pop.pop[best_i]
+  Gi = nx.to_dict_of_dicts(best_ind.G)
+
+  for i in range(15):
+    Pop.generation()
+
+  Pop.finish()
+  for ind in Pop.pop:
+    print ind.fat
+
+  fats = [ind.fat for ind in Pop.pop]
+  best_i = fats.index(min(fats))
+  best_ind = Pop.pop[best_i]
+  Gf = nx.to_dict_of_dicts(best_ind.G)
+
+  with open('finalgraphs.txt', 'w+') as f:
+    f.write(str(Gi))
+    f.write('\n\n\n')
+    f.write(str(Gf))
+
 
 
 if __name__ == '__main__':
@@ -139,5 +164,6 @@ if __name__ == '__main__':
   # pop_log_test()
   # pop_multiprocess_test()
   #no_warnings_test()
-  generation_test()
+  # generation_test()
   # fit_edges_test()
+  sim1()
