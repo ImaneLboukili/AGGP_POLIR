@@ -131,7 +131,9 @@ class Population(object):
 
 
     log = "\n## \n## "+str(datetime.datetime.now())+" : Generation of population done."+\
-          "\n##      Done in "+str('%.2f'%init_gen_time)+"s\n##"
+          "\n##      Done in "+str('%.2f'%init_gen_time)+"s\n##"+\
+          "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))+"  min fatness = "+str('%.5f'%np.min([ind.fat for ind in self.pop]))
+
     self.wlog(log)
 
 
