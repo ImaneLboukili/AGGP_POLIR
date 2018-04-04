@@ -8,6 +8,7 @@ from Individu import Individu
 import random as rd
 import numpy as np
 import sys
+import gc
 import networkx as nx
 
 # In theory, it's better to use this for classes and stuff but 
@@ -46,7 +47,7 @@ def evolve(Pop):
         child.basic_mut()
 
       if p < Pop.pCros:
-        father = Pop.pop[rd.randint(0, Pop.nInd-1)]
+        father = Pop.ech[rd.randint(0, Pop.echsize-1)]
         child1 = Pop.crossing_over(child, father)
         child = child1.copy()
 
@@ -59,6 +60,7 @@ def evolve(Pop):
       # if the child has a disconnected graph, an error will be raised so 
       # the child dies and another one is produced.
       pass
+  print Pop.gen 
   return child
 
 def bfs(graph, start, N, path=[]):
@@ -95,7 +97,7 @@ class Population(object):
     self.pMut = pMut
     self.pCros = pCros
     self.nprocess = nprocess
-    pool = Pool(self.nprocess)
+    #pool = Pool(self.nprocess)
     self.tb = [self]*self.nInd
 
     self.start_time = time.time()
@@ -126,13 +128,14 @@ class Population(object):
     pms = [(N, M, self.params)]*self.nInd 
 
     # get the results
-    self.pop = pool.map(mk_i, pms)
+    #self.pop = pool.map(mk_i, pms)
+    self.pop = [Individu(N, M) for _ in range(self.nInd)]
     init_gen_time = time.time()-start_gen
 
 
     log = "\n## \n## "+str(datetime.datetime.now())+" : Generation of population done."+\
-          "\n##      Done in "+str('%.2f'%init_gen_time)+"s\n##"+\
-          "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))+"  min fatness = "+str('%.5f'%np.min([ind.fat for ind in self.pop]))
+          "\n##     Done in "+str('%.2f'%init_gen_time)+"s\n##"+\
+          "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))+"  min fatness = "+str('%.5f'%np.min([ind.fat for ind in self.pop]))+'\n##'
 
     self.wlog(log)
 
@@ -157,14 +160,18 @@ class Population(object):
      
   def generation(self):
     start_gen = time.time()
-    pool = Pool(self.nprocess)
+    #pool = Pool(self.nprocess)
 
     # get the sample for this generation
     self.selection()
+    
+    for ind in self.pop:
+      if ind not in self.ech:
+        del ind
 
 
     # make new Indivs from the chosen
-    new_gen = pool.map(evolve, self.tb)#[evolve(self) for _ in range(self.nInd)]#
+    new_gen = [evolve(self) for _ in range(self.nInd)]#pool.map(evolve, self.tb)#
     self.pop = new_gen
     self.gen += 1
 
@@ -174,6 +181,7 @@ class Population(object):
           "\n##     Done in "+str('%.2f'%gen_time)+"s"+\
           "\n##     mean fatness = "+str('%.5f'%np.mean([ind.fat for ind in self.pop]))+"  min fatness = "+str('%.5f'%np.min([ind.fat for ind in self.pop]))
     self.wlog(log)
+    gc.collect()
 
     # for ind in self.pop:
     #   print "g"+str(self.gen)+"  ",ind.fat
